@@ -1,0 +1,20 @@
+{
+  "name": "@dual-lab/bast",
+  "version": "1.0.0-alpha",
+  "description": "Babel jit simple transpiler",
+  "main": "dist/public-api.js",
+  "repository": "git@github.com:dual-lab/bast.git",
+  "author": "dmike16 <cipmiky@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "pirates": "^4.0.1",
+    "source-map-support": "^0.5.16"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.8.7"
+  }
+}
