@@ -3,14 +3,21 @@
   "version": "1.0.0-alpha",
   "description": "Babel jit simple transpiler",
   "main": "dist/bast.js",
-  "module": "dist/bast-esm.js",
+  "module": "dist/bast-esm.mjs",
+  "type": "commonjs",
+  "exports": {
+    ".": "dist/bast.js",
+    "./esm": "dist/bast-esm.mjs"
+  },
   "repository": "git@github.com:dual-lab/bast.git",
   "author": "dmike16 <cipmiky@gmail.com>",
   "license": "MIT",
   "private": false,
   "scripts": {
     "build": "rollup --config",
-    "test": "node src/index.js"
+    "pretest": "rollup --config",
+    "test": "ava",
+    "test-dev": "ava"
   },
   "dependencies": {
     "lodash": "^4.17.15",
@@ -22,6 +29,7 @@
     "@babel/plugin-proposal-export-default-from": "^7.8.3",
     "@babel/preset-env": "^7.8.7",
     "@rollup/plugin-json": "^4.0.2",
+    "ava": "^3.5.0",
     "rollup": "^2.0.2",
     "rollup-plugin-babel": "^4.4.0"
   },

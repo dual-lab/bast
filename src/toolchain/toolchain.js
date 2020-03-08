@@ -1,5 +1,6 @@
 import { resolve } from "path";
 import { addHook } from "pirates";
+import { DEFAULT_EXTENSIONS } from "@babel/core";
 
 import compileHookWrapper from "./compile";
 
@@ -10,14 +11,13 @@ let cacheStore = {};
 
 /**
  * install babel jit transpiler hook
- * @return {() =? void} unistall function
+ * @return {() => void} unistall function
  */
 export default function install(opts = {}) {
 	const options = { ...opts };
 
-	const { cache, extensions } = options;
+	const { cache, extensions = DEFAULT_EXTENSIONS } = options;
 
-	//TODO: add hook call registsation
 	//TODO: add cache implementation
 
 	// Remove not babel options
@@ -42,5 +42,5 @@ export default function install(opts = {}) {
 		ignoreNodeModules: true
 	});
 
-	return () => revertHook();
+	return revertHook;
 }
