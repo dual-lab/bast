@@ -1,2 +1,2 @@
 export install from "./toolchain/toolchain";
-export babelImportSourceReplace from './resolver/babel-plugin-package-resolver.js';
+export babelImportSourceReplace from './plugins/babel-plugin-import-source-replace';
