@@ -93,6 +93,7 @@ function transformFixture(file, opts, presets) {
 	return transformFileSync(file, {
 		ast: true,
 		presets,
+		babelrc: false,
 		plugins: [[babelImportSourceReplace, opts]]
 	});
 }
