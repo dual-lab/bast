@@ -28,6 +28,7 @@
     "@babel/core": "^7.8.7",
     "@babel/plugin-proposal-export-default-from": "^7.8.3",
     "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
     "@babel/traverse": "^7.8.6",
     "@rollup/plugin-json": "^4.0.2",
     "ava": "^3.5.0",

@@ -1,6 +1,14 @@
 const identity = source => source;
 
-export default function babelImportSourceReplace({ types: t }) {
+export default function babelImportSourceReplace({ types: t }, options) {
+	if (
+		!!options.importSourceReplace &&
+		typeof options.importSourceReplace !== 'function'
+	) {
+		throw new Error(
+			`Option importSourceReplace must be a function of type (source: string)=> string`
+		);
+	}
 	return {
 		visitor: {
 			ImportDeclaration(path, state) {
@@ -13,7 +21,7 @@ export default function babelImportSourceReplace({ types: t }) {
 				path.replaceWith(
 					t.importDeclaration(
 						path.node.specifiers,
-						t.stringLiteral(replacedSource)
+						t.stringLiteral(newSource)
 					)
 				);
 			}
