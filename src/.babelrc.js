@@ -1,7 +1,7 @@
 module.exports = {
 	presets: [
 		[
-			"@babel/preset-env",
+			'@babel/preset-env',
 			{
 				modules: false,
 				targets: {
@@ -10,5 +10,5 @@ module.exports = {
 			}
 		]
 	],
-	plugins: ["@babel/plugin-proposal-export-default-from"]
+	plugins: ['@babel/plugin-proposal-export-default-from']
 };

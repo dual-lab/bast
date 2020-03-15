@@ -1,8 +1,8 @@
-import { resolve } from "path";
-import { addHook } from "pirates";
-import { DEFAULT_EXTENSIONS } from "@babel/core";
+import { resolve } from 'path';
+import { addHook } from 'pirates';
+import { DEFAULT_EXTENSIONS } from '@babel/core';
 
-import compileHookWrapper from "./compile";
+import compileHookWrapper from './compile';
 
 let revertHook = () => {
 	return;
@@ -25,16 +25,16 @@ export default function install(opts = {}) {
 	delete options.cache;
 
 	options.caller = {
-		name: "@dual-lab/bast",
+		name: '@dual-lab/bast',
 		...(options.caller || {})
 	};
 	// TODO: try to guess current directory.
-	const cwd = options.cwd || ".";
+	const cwd = options.cwd || '.';
 
 	const resolveCwd = (options.cwd = resolve(cwd));
 
 	if (!options.only || options.only.length === 0) {
-		options.only = [new RegExp(`^${resolveCwd}`, "i")];
+		options.only = [new RegExp(`^${resolveCwd}`, 'i')];
 	}
 
 	revertHook = addHook(compileHookWrapper(options, cacheStore), {

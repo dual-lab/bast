@@ -1,25 +1,23 @@
-import json from "@rollup/plugin-json";
-import babel from "rollup-plugin-babel";
+import json from '@rollup/plugin-json';
+import babel from 'rollup-plugin-babel';
 
-import { main, module, dependencies, peerDependencies } from "./package.json";
+import { main, module, dependencies, peerDependencies } from './package.json';
 
-const pkgExternal = [].concat(Object.keys(dependencies)).concat(Object.keys(peerDependencies));
+const pkgExternal = []
+	.concat(Object.keys(dependencies))
+	.concat(Object.keys(peerDependencies));
 
 export default {
-	input: "src/public-api.js",
-	external: [
-		...pkgExternal,
-		"lodash/fp",
-		"path"
-	],
+	input: 'src/public-api.js',
+	external: [...pkgExternal, 'lodash/fp', 'path'],
 	output: [
-		{ file: main, format: "cjs" },
-		{ file: module, format: "es" }
+		{ file: main, format: 'cjs' },
+		{ file: module, format: 'es' }
 	],
 	plugins: [
 		json(),
 		babel({
-			exclude: ["node_modules/**"]
+			exclude: ['node_modules/**']
 		})
 	]
 };

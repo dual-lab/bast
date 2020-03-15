@@ -1,8 +1,8 @@
-import { cloneDeep } from "lodash/fp";
-import { loadOptions, transformSync } from "@babel/core";
-import sourceMapSupport from "source-map-support";
+import { cloneDeep } from 'lodash/fp';
+import { loadOptions, transformSync } from '@babel/core';
+import sourceMapSupport from 'source-map-support';
 
-import { dirname } from "path";
+import { dirname } from 'path';
 
 let sourceMapStore = {};
 
@@ -25,7 +25,7 @@ export default function compileHookWrapper(transformOpts, cache = {}) {
 		compiled = transformSync(code, {
 			...opts,
 			sourceMaps:
-				opts.sourceMaps === undefined ? "both" : opts.sourceMaps,
+				opts.sourceMaps === undefined ? 'both' : opts.sourceMaps,
 			ast: false
 		});
 
@@ -44,7 +44,7 @@ export default function compileHookWrapper(transformOpts, cache = {}) {
 function initializeSourceMaps() {
 	sourceMapSupport.install({
 		handleUncaughtExceptions: false,
-		environment: "node",
+		environment: 'node',
 		retrieveSourceMap(source) {
 			const map = sourceMapStore && sourceMapStore[source];
 			if (map) {
