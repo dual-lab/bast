@@ -66,6 +66,11 @@ jobs:
   make_release:
     name: Create a github release
     needs: [make]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        node: [12.x]
     steps:
       - name: Download generated artifact
         uses: actions/download-artifact@v1
