@@ -1,6 +1,6 @@
 {
   "name": "@dual-lab/bast",
-  "version": "1.0.2-alpha",
+  "version": "1.0.3-alpha",
   "description": "Babel jit simple transpiler",
   "main": "dist/bast.js",
   "module": "dist/bast-esm.mjs",
