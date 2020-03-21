@@ -5,7 +5,7 @@ name: bast-wrap-up
 on: 
   push:
     branches:
-      - 'ideas/*'
+      - 'ideas/wrap-up'
   pull_request:
     types: [opened]
     branches:
