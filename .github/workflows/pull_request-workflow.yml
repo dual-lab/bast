@@ -16,7 +16,7 @@ strategy_list: &strategy_list
 
 use-checkout-action: &use-checkout-action
       name: Checkout repository
-      uses: actions/checkout@v2
+       uses: actions/checkout@v2
 
 jobs:
   configure:
