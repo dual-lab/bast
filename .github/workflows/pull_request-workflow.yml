@@ -27,5 +27,5 @@ jobs:
     steps:
       # chekout step
       <<: *use-checkout-action
-      run: |
+      - run: |
         ls && exit 1
