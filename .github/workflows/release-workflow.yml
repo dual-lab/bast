@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - master
+      - 'ideas/*'
     paths:
       - 'package.json'
 
@@ -48,4 +49,28 @@ jobs:
       # Test step
       - name: Make test
         run: yarn run test
+      # Pack the release
+      - name: Make pack
+        id: yarn-pack
+        run: |
+          yarn pack
+          echo "::set-output name=packname::$(basename *.tgz)"
+
+      # upload artifact
+      - name: Save generated artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: bast-pack
+          paht: ${{ steps.yarn-pack.outputs.packname }}
+
+  make_release:
+    name: Create a github release
+    needs: [make]
+    steps:
+      - name: Download generated artifact
+        uses: actions/download-artifact@v1
+        with: 
+          name: bast-pack
+      - run: stat bast-pack
+
      

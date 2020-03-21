@@ -9,6 +9,9 @@
     ".": "dist/bast.js",
     "./esm": "dist/bast-esm.mjs"
   },
+  "files": [
+    "/dist"
+  ],
   "repository": "git@github.com:dual-lab/bast.git",
   "author": "dmike16 <cipmiky@gmail.com>",
   "license": "MIT",
