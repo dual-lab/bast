@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: bast-pack
-          paht: ${{ steps.yarn-pack.outputs.packname }}
+          path: ${{ steps.yarn-pack.outputs.packname }}
 
   make_release:
     name: Create a github release
