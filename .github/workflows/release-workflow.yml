@@ -4,9 +4,6 @@ name: bast-ci
 
 on:
   push:
-    branches:
-      - master
-      - 'ideas/*'
     tags:
       - 'v*'
     paths:
