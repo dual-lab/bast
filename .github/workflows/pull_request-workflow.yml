@@ -7,24 +7,18 @@ on:
     branches:
       - 'ideas/*'
 
-strategy_list: &strategy_list 
+jobs:
+  configure:
+    name: Configure build enviroment
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-18.04]
         node: [12.x]
 
-use-checkout-action: &use-checkout-action
-      name: Checkout repository
-      uses: actions/checkout@v2
-
-jobs:
-  configure:
-    name: Configure build enviroment
-    runs-on: ${{ matrix.os }}
-    <<: *strategy_list
-
     steps:
       # chekout step
-      - *use-checkout-action
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: List dir contents
         run: ls
