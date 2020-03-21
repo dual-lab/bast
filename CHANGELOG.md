@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test babel plugin
 - Test jit compiler
 - This changelog
+- CI workflow configuration
 
 ### Changed
 
