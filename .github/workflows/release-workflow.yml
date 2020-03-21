@@ -1,0 +1,10 @@
+# Yaml file tha define github action from bast project
+
+name: bast-ci
+
+on: 
+  push:
+    branches:
+      - master
+    paths:
+      - 'package.json'
