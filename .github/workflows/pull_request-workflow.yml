@@ -15,7 +15,7 @@ strategy_list: &strategy_list
         node: [12.x]
 
 use-checkout-action: &use-checkout-action
-    - name: Checkout repository
+      name: Checkout repository
       uses: actions/checkout@v2
 
 jobs:
@@ -26,6 +26,6 @@ jobs:
 
     steps:
       # chekout step
-      <<: *use-checkout-action
+      - *use-checkout-action
       - run: |
         ls && exit 1
