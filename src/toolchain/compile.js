@@ -23,10 +23,9 @@ export default function compileHookWrapper(transformOpts, cache = {}) {
 			filename
 		});
 
-		// TODO: add cache logic
-		const cacheKey = `${JSON.stringify(opts)}:${
-			babel.version
-		}:${babel.getEnv()}`;
+		const cacheKey = cache.disabled
+			? ''
+			: `${JSON.stringify(opts)}:${babel.version}:${babel.getEnv()}`;
 		let compiled = cache.getRecord(cacheKey);
 		let newHashvalue = null;
 
