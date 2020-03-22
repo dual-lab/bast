@@ -3,6 +3,9 @@ import { loadOptions, transformSync } from '@babel/core';
 import sourceMapSupport from 'source-map-support';
 
 import { dirname } from 'path';
+import * as babel from '@babel/core';
+
+import hashValue from '../optimization/file-content-differ';
 
 let sourceMapStore = {};
 
@@ -21,13 +24,27 @@ export default function compileHookWrapper(transformOpts, cache = {}) {
 		});
 
 		// TODO: add cache logic
-		let compiled = null;
-		compiled = transformSync(code, {
-			...opts,
-			sourceMaps:
-				opts.sourceMaps === undefined ? 'both' : opts.sourceMaps,
-			ast: false
-		});
+		const cacheKey = `${JSON.stringify(opts)}:${
+			babel.version
+		}:${babel.getEnv()}`;
+		let compiled = cache.getRecord(cacheKey);
+		let newHashvalue = null;
+
+		if (
+			!compiled ||
+			compiled.hash !== (newHashvalue = hashValue(filename, code))
+		) {
+			compiled = transformSync(code, {
+				...opts,
+				sourceMaps:
+					opts.sourceMaps === undefined ? 'both' : opts.sourceMaps,
+				ast: false
+			});
+			if (cache.disabled === false) {
+				compiled.hash = newHashvalue;
+				cache.storeRecord(cacheKey, compiled);
+			}
+		}
 
 		if (compiled.map) {
 			if (initSourceMap) {
