@@ -40,8 +40,6 @@ test('Compiler hook is register with correct options.', t => {
 	uninstall();
 });
 
-test.todo('Cache is correctly loaded');
-
 test('Source map is installed.', t => {
 	t.plan(1);
 
