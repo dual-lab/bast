@@ -9,7 +9,7 @@ const pkgExternal = []
 
 export default {
 	input: 'src/public-api.js',
-	external: [...pkgExternal, 'lodash/fp', 'path'],
+	external: [...pkgExternal, 'lodash/fp', 'path', 'fs'],
 	output: [
 		{ file: main, format: 'cjs' },
 		{ file: module, format: 'es' }
