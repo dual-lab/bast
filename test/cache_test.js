@@ -6,9 +6,11 @@ const fs = require('fs');
 const rimraf = require('rimraf');
 const { use } = require('../dist/bast');
 const fixtures_dir = path.resolve(__dirname, './__fixture__');
-const cache_dir = path.join(path.resolve(__dirname, '../node_modules'), '.cache', '@dual-lab');
-
-let testCounter = 1;
+const cache_dir = path.join(
+	path.resolve(__dirname, '../node_modules'),
+	'.cache',
+	'@dual-lab'
+);
 
 test.before('Clean up cache directory', t => {
 	rimraf.sync(cache_dir);
@@ -29,10 +31,7 @@ test.beforeEach('Proxy modules pirates and source-map-support', t => {
 			install() {}
 		},
 		'find-cache-dir': _ => {
-			t.context.cacheDir = path.join(
-				cache_dir,
-				`bast_${testCounter++}`
-			);
+			t.context.cacheDir = path.join(cache_dir, `bast`);
 			return t.context.cacheDir;
 		}
 	});
@@ -45,9 +44,9 @@ test(
 
 test('Cache registry directory is created.', cacheisInitialized);
 
-test('Cache registry is correctly saved.', cacheisSaved);
+test.serial('Cache registry is correctly saved.', cacheisSaved);
 
-test.todo('Cache registry is correctly loaded.');
+test.serial('Cache registry is correctly loaded.', cacheisLoadedCorrectly);
 
 //
 // Test macro
@@ -98,7 +97,7 @@ function cacheisSaved(t) {
 		'Cache directory is created'
 	);
 
-	return new Promise((r, _) => setTimeout(() => r(), 0)).then(() => {
+	return waitSetImmidiateExecution().then(() => {
 		t.true(
 			fs.readdirSync(t.context.cacheDir).length === 1,
 			'Cache directory is not empty'
@@ -106,6 +105,28 @@ function cacheisSaved(t) {
 	});
 }
 
+function cacheisLoadedCorrectly(t) {
+	t.plan(3);
+	const uninstall = t.context.install({
+		extensions: ['.js'],
+		cache: true
+	});
+
+	const code = compileCode(t.context.registedCompiler);
+	uninstall();
+
+	t.true(
+		fs.statSync(t.context.cacheDir).isDirectory(),
+		'Cache directory is created'
+	);
+
+	const cacheFile = fs.readdirSync(t.context.cacheDir)[0];
+	const cachedJson = fs.readFileSync(path.join(t.context.cacheDir, cacheFile), 'utf8');
+	let cachedCode = null;
+
+	t.notThrows(() => cachedCode = JSON.parse(cachedJson), 'Json cache is correctly parsed');
+	t.is(code, Object.values(cachedCode)[0].code, 'Code compiled is taken from cache');
+}
 //
 // helper function
 //
@@ -116,4 +137,8 @@ function compileCode(registedCompiler) {
 	);
 
 	return registedCompiler(code, path.join(fixtures_dir, 'tobe-parsed.js'));
+}
+
+function waitSetImmidiateExecution() {
+	return new Promise((r, _) => setTimeout(() => r(), 0));
 }
