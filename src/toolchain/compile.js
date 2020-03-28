@@ -28,7 +28,6 @@ export default function compileHookWrapper(transformOpts, cache = {}) {
 			: `${JSON.stringify(opts)}:${babel.version}:${babel.getEnv()}`;
 		let compiled = cache.getRecord(cacheKey);
 		let newHashvalue = null;
-
 		if (
 			!compiled ||
 			compiled.hash !== (newHashvalue = hashValue(filename, code))

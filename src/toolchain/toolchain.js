@@ -28,7 +28,7 @@ export default function install(opts = {}) {
 		name: '@dual-lab/bast',
 		...(options.caller || {})
 	};
-	// TODO: try to guess current directory.
+
 	const cwd = options.cwd || '.';
 
 	const resolveCwd = (options.cwd = resolve(cwd));

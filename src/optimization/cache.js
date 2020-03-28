@@ -4,7 +4,7 @@ import { readFileSync, mkdirSync, writeFileSync } from 'fs';
 import * as babel from '@babel/core';
 
 let data = {};
-let cacheDisabled = true;
+let cacheDisabled = false;
 
 /**
  * Implement cache registry functionalities:
@@ -60,7 +60,6 @@ function saveCache(filename) {
 	if (cacheDisabled) {
 		return;
 	}
-	console.info('calling save cache');
 	let cacheSerialized = '{}';
 	try {
 		cacheSerialized = JSON.stringify(data, null, ' ');
