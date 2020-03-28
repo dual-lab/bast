@@ -1,0 +1,98 @@
+# Yaml file tha define github action from bast project
+
+name: bast-ci
+
+on:
+  push:
+    tags:
+      - 'v*'
+    paths:
+      - 'package.json'
+
+jobs:
+  make:
+    name: Make build and test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        node: [12.x]
+
+    steps:
+      # Setup node js
+      - name: Setup node {{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          nodes-version: matrix.node
+          scope: '@dual-lab'
+      # chekout step
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      # setup yarn cache
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      # Install dep step
+      - name: Install node dependecies
+        run: yarn install
+      # Build step
+      - name: Make build
+        run: yarn run build
+      # Test step
+      - name: Make test
+        run: yarn run test
+      # Pack the release
+      - name: Make pack
+        id: yarn-pack
+        run: |
+          yarn pack
+          echo "::set-output name=packname::$(basename *.tgz)"
+
+      # upload artifact
+      - name: Save generated artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: bast-pack
+          path: ${{ steps.yarn-pack.outputs.packname }}
+
+  make_release:
+    name: Create a github release
+    needs: [make]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        node: [12.x]
+    steps:
+      - name: Download generated artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: bast-pack
+      - name: Get pack name
+        id: get-pack-name
+        run: echo "::set-output name=packname::$(basename bast-pack/*.tgz)"
+      - name: Create release tags
+        id: create-release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+      - name: Upload assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./bast-pack/${{ steps.get-pack-name.outputs.packname }}
+          asset_content_type: application/gzip
+          asset_name: ${{ steps.get-pack-name.outputs.packname }}
