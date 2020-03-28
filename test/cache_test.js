@@ -6,9 +6,13 @@ const fs = require('fs');
 const rimraf = require('rimraf');
 const { use } = require('../dist/bast');
 const fixtures_dir = path.resolve(__dirname, './__fixture__');
-const node_modules_dir = path.resolve(__dirname, '../node_modules');
+const cache_dir = path.join(path.resolve(__dirname, '../node_modules'), '.cache', '@dual-lab');
 
 let testCounter = 1;
+
+test.before('Clean up cache directory', t => {
+	rimraf.sync(cache_dir);
+});
 
 test.beforeEach('Proxy modules pirates and source-map-support', t => {
 	t.context = proxyquire('../dist/bast', {
@@ -26,9 +30,7 @@ test.beforeEach('Proxy modules pirates and source-map-support', t => {
 		},
 		'find-cache-dir': _ => {
 			t.context.cacheDir = path.join(
-				node_modules_dir,
-				'.cache',
-				'@dual-lab',
+				cache_dir,
 				`bast_${testCounter++}`
 			);
 			return t.context.cacheDir;
@@ -46,10 +48,6 @@ test('Cache registry directory is created.', cacheisInitialized);
 test('Cache registry is correctly saved.', cacheisSaved);
 
 test.todo('Cache registry is correctly loaded.');
-
-test.afterEach.always('Clean up cache directory', t => {
-	// t.context.cacheDir && rimraf.sync(t.context.cacheDir);
-});
 
 //
 // Test macro
@@ -86,7 +84,7 @@ function cacheisInitialized(t) {
 }
 
 function cacheisSaved(t) {
-	t.plan(1);
+	t.plan(2);
 	const uninstall = t.context.install({
 		extensions: ['.js'],
 		cache: true
@@ -99,13 +97,13 @@ function cacheisSaved(t) {
 		fs.statSync(t.context.cacheDir).isDirectory(),
 		'Cache directory is created'
 	);
-	
-	// return new Promise((r, _) => setTimeout(() => r(), 1000)).then(() => {
-	// 	t.true(
-	// 		fs.readdirSync(t.context.cacheDir).length === 1,
-	// 		'Cache directory is not empty'
-	// 	);
-	// });
+
+	return new Promise((r, _) => setTimeout(() => r(), 0)).then(() => {
+		t.true(
+			fs.readdirSync(t.context.cacheDir).length === 1,
+			'Cache directory is not empty'
+		);
+	});
 }
 
 //
