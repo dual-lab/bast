@@ -86,7 +86,8 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          draft: true
+          draft: false
+          prerelease: true
       - name: Upload assets
         uses: actions/upload-release-asset@v1
         env:
@@ -96,3 +97,13 @@ jobs:
           asset_path: ./bast-pack/${{ steps.get-pack-name.outputs.packname }}
           asset_content_type: application/gzip
           asset_name: ${{ steps.get-pack-name.outputs.packname }}
+      - name: Setup node {{ matrix.node }} with npm repository
+        uses: actions/setup-node@v1
+        with:
+          nodes-version: matrix.node
+          scope: '@dual-lab'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Publish to npm
+        run: yarn publish ${{ steps.get-pack-name.outputs.packname }} --tag beta --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_DUALAB_TOKEN }}
