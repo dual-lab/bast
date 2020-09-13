@@ -100,7 +100,7 @@ jobs:
       - name: Setup node {{ matrix.node }} with npm repository
         uses: actions/setup-node@v1
         with:
-          nodes-version: matrix.node
+          node-version: matrix.node
           scope: '@dual-lab'
           registry-url: 'https://registry.npmjs.org'
       - name: Publish to npm
