@@ -25,7 +25,7 @@ jobs:
       - name: Setup node {{ matrix.node }}
         uses: actions/setup-node@v1
         with:
-          nodes-version: matrix.node
+          node-version: matrix.node
           scope: '@dual-lab'
       # chekout step
       - name: Checkout repository
