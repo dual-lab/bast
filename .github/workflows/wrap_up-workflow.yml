@@ -22,10 +22,10 @@ jobs:
 
     steps:
       # Setup node js
-      - name: Setup node {{ matrix.node }}
+      - name: Setup node ${{ matrix.node }}
         uses: actions/setup-node@v1
         with:
-          node-version: matrix.node
+          node-version: ${{ matrix.node }}
           scope: '@dual-lab'
       # chekout step
       - name: Checkout repository

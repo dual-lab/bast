@@ -20,10 +20,10 @@ jobs:
 
     steps:
       # Setup node js
-      - name: Setup node {{ matrix.node }}
+      - name: Setup node ${{ matrix.node }}
         uses: actions/setup-node@v1
         with:
-          nodes-version: matrix.node
+          nodes-version: ${{ matrix.node }}
           scope: '@dual-lab'
       # chekout step
       - name: Checkout repository
@@ -97,10 +97,10 @@ jobs:
           asset_path: ./bast-pack/${{ steps.get-pack-name.outputs.packname }}
           asset_content_type: application/gzip
           asset_name: ${{ steps.get-pack-name.outputs.packname }}
-      - name: Setup node {{ matrix.node }} with npm repository
+      - name: Setup node ${{ matrix.node }} with npm repository
         uses: actions/setup-node@v1
         with:
-          node-version: matrix.node
+          node-version: ${{ matrix.node }}
           scope: '@dual-lab'
           registry-url: 'https://registry.npmjs.org'
       - name: Publish to npm
