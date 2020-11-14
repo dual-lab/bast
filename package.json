@@ -1,13 +1,13 @@
 {
   "name": "@dual-lab/bast",
-  "version": "1.0.2-beta",
+  "version": "1.0.4-beta",
   "description": "Babel jit simple transpiler",
   "main": "dist/bast.js",
   "module": "dist/bast-esm.mjs",
   "type": "commonjs",
   "exports": {
-    ".": "dist/bast.js",
-    "./esm": "dist/bast-esm.mjs"
+    ".": "./dist/bast.js",
+    "./esm": "./dist/bast-esm.mjs"
   },
   "files": [
     "/dist"
